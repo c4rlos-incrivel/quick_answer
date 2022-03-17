@@ -6,7 +6,7 @@ services:
       - "8091:80"
       - "443:443"
     networks:
-      - web-dev
+      - answer-dev
     volumes:
       - ./confs/servers/:/etc/nginx/conf.d/
       - ./projects:/var/www/projects
@@ -50,7 +50,7 @@ services:
       - answer-dev
   node:
     image: node:lts
-    container_name: webdev-node-npm
+    container_name: answer-node-npm
     volumes:
       - "./projects:/var/www"
     ports:

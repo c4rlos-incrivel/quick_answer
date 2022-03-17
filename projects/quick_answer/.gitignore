@@ -14,4 +14,4 @@ yarn-error.log
 /.idea
 /.vscode
 *.log
-../../confs/mysql_db
+confs/mysql_db
