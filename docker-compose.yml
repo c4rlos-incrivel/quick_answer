@@ -1,0 +1,64 @@
+services:
+  web-server:
+    image: nginx:1.21.1
+    container_name: answer-nginx
+    ports:
+      - "8091:80"
+      - "443:443"
+    networks:
+      - web-dev
+    volumes:
+      - ./confs/servers/:/etc/nginx/conf.d/
+      - ./projects:/var/www/projects
+      - ./confs/ssl/:/var/www/ssl
+  php:
+    build:
+      dockerfile: ./php.dockerfile
+      context: .
+    image: php7.4-fpm
+    container_name: answer-php
+    volumes:
+      - ./projects:/var/www/projects
+    ports:
+      - "9000:9000"
+    networks:
+      - answer-dev
+  db:
+    image: mysql:latest
+    container_name: answer-mysql
+    volumes:
+      - ./confs/mysql_db:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: Killer2o22
+      MYSQL_DATABASE: larafood
+      MYSQL_USER: c4rlos
+      MYSQL_PASSWORD: Killer2o22
+      SERVICE_NAME: mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - answer-dev
+  adminer:
+    depends_on:
+      - db
+    image: adminer
+    restart: always
+    ports:
+      - 8090:8080
+    networks:
+      - answer-dev
+  node:
+    image: node:lts
+    container_name: webdev-node-npm
+    volumes:
+      - "./projects:/var/www"
+    ports:
+      - "9002:9002"
+    networks:
+      - answer-dev
+    tty: true
+
+networks:
+  answer-dev:
+    driver: bridge
