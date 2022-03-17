@@ -7,7 +7,7 @@ ou
 - docker-compose up -d
 
 # Udpate das dependencias
-- docker exec -it answer-dev bash
+- docker exec -it answer-php bash
 - cd /projects/quick_answer
 - composer update
 
